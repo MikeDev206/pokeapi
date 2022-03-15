@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
-import Pokedex from "../lib/Pokedex";
+import pokedex from "../lib/Pokedex";
+import PokemonModal from './PokemonModal'
 
-export default function PokemonBadge({ name = "", url = "" }) {
+export default function PokemonCard({ name = "", url = "" }) {
 	const [pokemon, setPokemon] = useState({});
 	const [image, setImage] = useState(
 		"https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Pokebola-pokeball-png-0.png/769px-Pokebola-pokeball-png-0.png"
 	);
+	const [isSelected, setIsSelected] = useState(false);
 
 	useEffect(() => {
-		Pokedex.getPokemonByName(name).then((pokedexResponse) => {
-			setPokemon(pokemon);
-			setImage(pokedexResponse.sprites.front_default);
+		pokedex.getPokemonByName(name).then((response) => {
+			setImage(response.sprites.front_default);
+			setPokemon(response);
 		});
-	});
+	}, []);
 
 	return (
-		<article className="pokemon-card">
-			<header>
-				<img
-					src={image}
-					alt="pokeball"
-				/>
-			</header>
-			<footer>{name}</footer>
-		</article>
+		<>
+			{isSelected && (
+				<PokemonModal pokemon={pokemon} onClose={() => setIsSelected(false)} />
+			)}
+			<article className="pokemon-card" onClick={() => setIsSelected(true)}>
+				<header>
+					<img src={image} alt="pokemon" />
+				</header>
+				<footer>{name}</footer>
+			</article>
+		</>
 	);
 }

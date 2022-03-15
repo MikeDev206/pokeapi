@@ -26,11 +26,20 @@ function App() {
 			<main>
 				<section className="results">
 					{pokemons.map((pokemon) => {
-            return <PokemonBadge name={pokemon.name} />
+            return (
+               <PokemonBadge 
+                name={pokemon.name}
+                url={pokemon.url} 
+                key={pokemon.name}
+               />
+            )
 					  })
           }
-
 				</section>
+        <footer>
+          <div> Anterior </div>
+          <div> Siguiente </div>
+        </footer>
 			</main>
 		</>
 	);
